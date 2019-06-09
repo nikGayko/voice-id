@@ -27,9 +27,8 @@ from enum import Enum
 
 import numpy
 
-import mfcc as processor
-import voice_recognition
-from NPoint import NPoint
+from core import voice_recognition, mfcc as processor
+from core.NPoint import NPoint
 
 types = {
     1: numpy.int8,
