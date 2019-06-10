@@ -21,14 +21,13 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
-
-from identification.Manager import Manager
+from identification.CLIApp import CLIApp
 
 DATABASE_PATH = './identification/mfcc_database.json'
 
 
 def main():
-    id_manager = Manager(database_path=DATABASE_PATH)
+    id_manager = CLIApp(DATABASE_PATH)
     id_manager.start()
 
 

@@ -38,20 +38,6 @@ def process(file_name: str) -> list:
 
     sections = __devide_audio__(normalized_amplitudes, section_length, sections_count)
 
-    filters = mel_filters(12, len(sections[0]), framerate, MAX_FREQUENCY, MIN_FREQUENCY)
-
-    # pw = pg.plot(filters[0])
-    # for filter in filters:
-    #     pw.plotItem.plot(filter)
-
-    # for sec in sections:
-    #     xVals = range(0, len(sec))
-    #     window = [hamming_window(x, len(xVals)) for x in xVals]
-        # windowed_samples = [sec[index] * window[index] for index in range(len(sec))]
-        # pw = pg.plot(xVals, sec, pen='w')
-        # pw.plot(xVals, window, pen='y')
-        # show_array(sec)
-
     factors = [transform(samples, MFCC_SIZE, framerate, MAX_FREQUENCY, MIN_FREQUENCY) for samples in sections]
     return factors
 

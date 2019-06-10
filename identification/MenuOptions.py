@@ -2,20 +2,17 @@ from enum import Enum
 
 
 class MenuOptions(Enum):
-    ADD_USER = 1
-    ADD_RECORD = 2
-    RECOGNIZE = 3
+    ADD_RECORD = 1
+    RECOGNIZE = 2
     EXIT = 0
 
     def description(self) -> str:
-        if self == MenuOptions.ADD_USER:
-            return "1. Add new user"
-        elif self == MenuOptions.ADD_RECORD:
-            return "2. Add new record to user"
+        if self == MenuOptions.ADD_RECORD:
+            return "{}. Add record to database".format(self.value)
         elif self == MenuOptions.RECOGNIZE:
-            return "3. Recognize person"
+            return "{}. Recognize person".format(self.value)
         elif self == MenuOptions.EXIT:
-            return "0. Exit"
+            return "{}. Exit".format(self.value)
 
     @staticmethod
     def all_values() -> list:
