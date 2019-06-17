@@ -17,9 +17,13 @@ class CLIApp:
             option = self.__handle_option__()
 
             if option == MenuOptions.ADD_RECORD:
-                self.__add_new_user__()
+                self.__add_new_record__()
             elif option == MenuOptions.RECOGNIZE:
                 self.__recognize_person__()
+            elif option == MenuOptions.REMOVE_USER:
+                self.__remove_person__()
+            elif option == MenuOptions.REMOVE_ALL:
+                self.__remove_all__()
 
     def __print_options__(self):
         print("Choose one of available options:")
@@ -37,7 +41,7 @@ class CLIApp:
 
         # Option 1 - add new user
 
-    def __add_new_user__(self):
+    def __add_new_record__(self):
         file_path = self.__request_path__()
 
         print("Input new user name or select one of suggested:")
@@ -58,7 +62,7 @@ class CLIApp:
         core.update_centroid(self.__DATABASE_PATH__, person_name)
         print("database updated")
 
-        # Option 3 - recognize person
+        # Option 2 - recognize person
 
     def __recognize_person__(self):
         file_path = self.__request_path__()
@@ -72,3 +76,26 @@ class CLIApp:
     def __request_path__(self) -> str:
         print("Input absolute path to audio file")
         return str(input())
+
+    # Option 3 - recognize person
+
+    def __remove_person__(self):
+        print("Select person:")
+
+        print("Input select one user name:")
+        all_names = db.all_users(self.__DATABASE_PATH__)
+        [print("{}. {}".format(index, all_names[index])) for index in range(len(all_names))]
+
+        try:
+            index = int(input())
+            person_name = all_names[index]
+            db.remove_user(self.__DATABASE_PATH__, person_name)
+            print("{} removed".format(person_name))
+        except (ValueError, IndexError):
+            print("ERROR!!!\nInvalid option")
+
+    # Option 4 - recognize person
+
+    def __remove_all__(self):
+        db.remove_all(self.__DATABASE_PATH__)
+        print("All users removed")

@@ -2,9 +2,10 @@ import wave
 from math import cos
 from math import pi
 
+import numpy
 import pyqtgraph as pg
 
-import numpy
+from mfcc.errors import ChannelNumberError, BitsDepthError, FramrateError
 
 types = {
     1: numpy.int8,
@@ -21,25 +22,39 @@ MAX_FREQUENCY = 8000
 
 def process(file_name: str) -> list:
     wav_file = wave.open(file_name)
-    (nchannels, sampwidth, framerate, nframes, comptype, compname) = wav_file.getparams()
+    __validate__(wav_file)
 
-    if nchannels != 1:
-        print("WAV should have mono channels")
-        raise AssertionError
+    (nchannels, bits_depth, framerate, frames_count, _, _) = wav_file.getparams()
 
-    frames = wav_file.readframes(nframes)
-    amplitudes = numpy.fromstring(frames, dtype=types[sampwidth])
+    frames = wav_file.readframes(frames_count)
+    amplitudes = numpy.fromstring(frames, dtype=types[bits_depth])
 
     max_amplitude = abs(max(amplitudes, key=abs))
     normalized_amplitudes = list(map(lambda ampl: ampl / max_amplitude, amplitudes))
 
     section_length = int(framerate * SECTION_SEC)
-    sections_count = int(nframes / section_length)
+    sections_count = int(frames_count / section_length)
 
     sections = __devide_audio__(normalized_amplitudes, section_length, sections_count)
 
     factors = [transform(samples, MFCC_SIZE, framerate, MAX_FREQUENCY, MIN_FREQUENCY) for samples in sections]
     return factors
+
+
+def __validate__(wav_file):
+    (nchannels, bits_depth, framerate, frames_count, _, _) = wav_file.getparams()
+
+    if nchannels != 1:
+        print("WAV should have mono channels")
+        raise ChannelNumberError
+
+    if bits_depth < 2:
+        print("WAV should have 2 bytes per frame")
+        raise BitsDepthError
+
+    if framerate < 41500:
+        print("WAV framerate should be more than 41500Hz")
+        raise FramrateError
 
 
 def __devide_audio__(amplitudes: list, length: int, count: int) -> list:

@@ -22,13 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 """
 from identification.CLIApp import CLIApp
-
+from identification import database_utils as db
+from identification import math
 DATABASE_PATH = './identification/mfcc_database.json'
-
+TEMPLATE_PATH = ''
 
 def main():
-    id_manager = CLIApp(DATABASE_PATH)
-    id_manager.start()
+    # id_manager = CLIApp(DATABASE_PATH)
+    # id_manager.start()
+    test = db.all_users('/Users/nik.gayko/Projects/graduate-work/mfcc_database_work_template.json')
+    centroid = math.list_mean(test.reco)
 
 
 if __name__ == "__main__":

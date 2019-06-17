@@ -2,7 +2,7 @@ import io
 import json
 import os
 
-from core.models import NPoint
+from mfcc.models import NPoint
 from identification.models import Centroid, Record
 
 
@@ -104,6 +104,35 @@ def all_users(db_path: str) -> list:
 
         users: dict = database.get("users", {})
         return list(users.keys())
+
+
+def remove_user(db_path: str, person_name: str):
+    __check_database__(db_path)
+    with open(db_path, mode='w+') as file:
+        database = json.load(file)
+        file.seek(0)
+        users: dict = database.get("users", {})
+
+        if person_name in users:
+            pass
+            # users.pop(person_name, None)
+            # json.dump(database, file, sort_keys=True, indent=4, ensure_ascii=False)
+
+        file.close()
+
+
+def remove_all(db_path: str):
+    __check_database__(db_path)
+    with open(db_path, mode='r+') as file:
+        database = json.load(file)
+        file.seek(0)
+
+        if "users" in database:
+            pass
+            # del database["users"]
+            # json.dump(database, file, sort_keys=True, indent=4, ensure_ascii=False)
+
+        file.close()
 
 
 def __check_database__(path: str):

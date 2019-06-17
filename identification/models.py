@@ -1,4 +1,4 @@
-from core.models import NPoint
+from mfcc.models import NPoint
 
 
 class Record:

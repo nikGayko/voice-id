@@ -1,6 +1,6 @@
 import ntpath
 
-from core import mfcc
+from mfcc import mfcc
 from identification import database_utils as db
 from identification import math as cluster
 from identification.models import Record, Centroid, Distance
